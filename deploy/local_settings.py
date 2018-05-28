@@ -12,7 +12,8 @@ env = environ.Env(
     MEDIA_URL=(str, '/media/'),
     STATIC_URL=(str, '/static/'),
     COOKIE_PREFIX=(str, 'smbackend'),
-    SECURE_PROXY_SSL = (bool, False)
+    SECURE_PROXY_SSL = (bool, False),
+    ADMINS=(list, [])
 )
 
 environ.Env.read_env()
