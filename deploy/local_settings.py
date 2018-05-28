@@ -1,14 +1,31 @@
-DEBUG = True
-ALLOWED_HOSTS = ['localhost', 'smbackend.kontena.hel.ninja']
 
-grr='''DATABASES = {
-    'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'smbackend',
-        'CONN_MAX_AGE': 600,
-    }
-}'''
+import environ
 
-STATIC_ROOT = BASE_DIR + '/home/smbackend/static'
-STATIC_URL = BASE_DIR + '/servicemap/static/'
 
+root = environ.Path(__file__) - 2  # two folders back
+env = environ.Env(
+    DEBUG=(bool, False),
+    SECRET_KEY=(str, ''),
+    ALLOWED_HOSTS=(list, []),
+    DATABASE_URL=(str, 'postgis:///smbackend'),
+    MEDIA_ROOT=(environ.Path(), root('media')),
+    STATIC_ROOT=(environ.Path(), root('static')),
+    MEDIA_URL=(str, '/media/'),
+    STATIC_URL=(str, '/static/'),
+    COOKIE_PREFIX=(str, 'smbackend')
+)
+
+environ.Env.read_env()
+
+DEBUG = env('DEBUG')
+ALLOWED_HOSTS = env('ALLOWED_HOSTS')
+ADMINS = env('ADMINS')
+
+DATABASES = {
+    'default': env.db()
+}
+
+STATIC_URL = env('STATIC_URL')
+MEDIA_URL = env('MEDIA_URL')
+STATIC_ROOT = env('STATIC_ROOT')
+MEDIA_ROOT = env('MEDIA_ROOT')
