@@ -1,7 +1,6 @@
 
 import environ
 
-
 root = environ.Path(__file__) - 2  # two folders back
 env = environ.Env(
     DEBUG=(bool, False),
@@ -12,7 +11,8 @@ env = environ.Env(
     STATIC_ROOT=(environ.Path(), root('static')),
     MEDIA_URL=(str, '/media/'),
     STATIC_URL=(str, '/static/'),
-    COOKIE_PREFIX=(str, 'smbackend')
+    COOKIE_PREFIX=(str, 'smbackend'),
+    SECURE_PROXY_SSL = (bool, False)
 )
 
 environ.Env.read_env()
@@ -29,3 +29,6 @@ STATIC_URL = env('STATIC_URL')
 MEDIA_URL = env('MEDIA_URL')
 STATIC_ROOT = env('STATIC_ROOT')
 MEDIA_ROOT = env('MEDIA_ROOT')
+
+if env('SECURE_PROXY_SSL'):
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
